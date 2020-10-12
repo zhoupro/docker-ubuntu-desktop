@@ -1,7 +1,10 @@
 # 基础镜像
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 # 维护者信息
 MAINTAINER gotoeasy <gotoeasy@163.com>
+
+RUN sed -i "s/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g"  /etc/apt/sources.list
+
 
 # 环境变量
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -21,7 +24,7 @@ RUN echo "root:$PASSWD" | chpasswd
 # 安装
 RUN apt-get -y update && \
     # tools
-    apt-get install -y wget curl net-tools locales bzip2 unzip iputils-ping traceroute firefox firefox-locale-zh-hans ttf-wqy-microhei gedit ibus-pinyin && \
+    apt-get install -y wget curl net-tools locales bzip2 unzip iputils-ping traceroute firefox firefox-locale-zh-hans ttf-wqy-microhei gedit gdebi && \
     locale-gen zh_CN.UTF-8 && \
     # ssh
     apt-get install -y openssh-server && \
@@ -43,6 +46,20 @@ RUN apt-get -y update && \
     # clean
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN apt-get -y update && \
+   #apt-get remove -y ibus indicator-keyboard && apt-get purge -y ibus && \
+   apt install -y fcitx-table-wbpy fcitx-config-gtk gdebi &&\
+   im-config -n fcitx 
+
+RUN   wget 'http://cdn2.ime.sogou.com/dl/index/1599192613/sogoupinyin_2.3.2.07_amd64-831.deb?st=1cXIZ9xRzyq4GPkctOsB3Q&e=1602396489&fn=sogoupinyin_2.3.2.07_amd64-831.deb' -O sougou.deb && \
+    dpkg -i sougou.deb ||   apt-get install -fy 
+
+ 
+ADD ./soft/lant.deb  /root/
+ADD ./soft/pxy.sh  /usr/bin/pxy
+RUN gdebi -n /root/lant.deb
+RUN wget 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb' && gdebi -n google-chrome-stable_current_amd64.deb 
 
 # 配置xfce图形界面
 ADD ./xfce/ /root/
