@@ -2,13 +2,16 @@ version: "3"
 
 services:
   ubuntu-desktop:
-    image: prozhou/ubuntu-desktop
+    image: mydev
     privileged: true
     shm_size: '2gb'
     volumes:
       - .:/root/workspace
     ports:
       - "5900:5900"
+      - "9999:9999"
     environment:
-      SIZE: 1920x1080
-      PASSWD: 123456
+      SIZE: 4096x2160
+      PASSWD: docker
+
+
