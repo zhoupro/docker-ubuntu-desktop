@@ -45,7 +45,7 @@ RUN gdebi -n /root/lant.deb && rm -f /root/lant.deb
 USER root
 WORKDIR /root
 
-RUN  wget -qO- https://dl.bintray.com/tigervnc/stable/tigervnc-1.9.0.x86_64.tar.gz | tar xz --strip 1 -C / 
+RUN  wget -qO- https://dl.bintray.com/tigervnc/stable/tigervnc-1.10.0.x86_64.tar.gz | tar xz --strip 1 -C / 
 
 RUN apt-get -y clean && apt -y autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -53,8 +53,10 @@ RUN apt-get -y clean && apt -y autoremove && \
 RUN sed  -i  's/sans 8/JetBrainsMono Nerd Font Mono/g' /usr/share/awesome/themes/default/theme.lua
 
 
-ADD ./soft/jetfont.ttf  /root/
 ADD ./conf/rc.lua /root/.config/awesome/rc.lua 
+ADD ./soft/jetfont.ttf   /usr/share/fonts/jetfont.ttf
+RUN fc-cache -f -v
+
 
 RUN mkdir -p /root/.vnc && \
     echo $PASSWD | vncpasswd -f > /root/.vnc/passwd && \
