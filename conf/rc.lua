@@ -49,10 +49,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "konsole"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -97,21 +97,13 @@ myawesomemenu = {
 local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
 local menu_terminal = { "open terminal", terminal }
 
-if has_fdo then
-    mymainmenu = freedesktop.menu.build({
-        before = { menu_awesome },
-        after =  { menu_terminal }
-    })
-else
-    mymainmenu = awful.menu({
-        items = {
-                  menu_awesome,
-                  { "Debian", debian.menu.Debian_menu.Debian },
-                  menu_terminal,
-                }
-    })
-end
 
+mymainmenu = awful.menu({
+	items = {
+	  menu_awesome,
+	  menu_terminal,
+	}
+})
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
@@ -187,7 +179,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({"", "",  "", "ﱘ", ""  }, s, awful.layout.layouts[7])
+    awful.tag({"O", "O",  "O" }, s, awful.layout.layouts[7])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -224,14 +216,14 @@ awful.screen.connect_for_each_screen(function(s)
            -- mylauncher,
             s.mytaglist,
             s.mypromptbox,
+            s.mylayoutbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            --mykeyboardlayout,
             wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
+            --mytextclock,
         },
     }
 end)
@@ -291,6 +283,13 @@ globalkeys = gears.table.join(
         end,
         {description = "go back", group = "client"}),
 
+    awful.key({ modkey,           }, "q",
+        function ()
+	    awful.util.spawn("rofi -show run")
+        end,
+        {description = "rofi", group = "client"}),
+
+
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -326,25 +325,7 @@ globalkeys = gears.table.join(
                     )
                   end
               end,
-              {description = "restore minimized", group = "client"}),
-
-    -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "restore minimized", group = "client"})
 )
 
 clientkeys = gears.table.join(
@@ -582,13 +563,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 --
 --
-awful.util.spawn("xfce4-power-manager")
-awful.util.spawn("xfce4-volumed")
+--
 awful.util.spawn("xrandr -o right")
 awful.util.spawn("xcompmgr &")
 --awful.util.spawn("bash /usr/local/bin/awesomeinit.sh")
-awful.util.spawn("nm-applet")
-awful.util.spawn("blueman-applet")
---awful.util.spawn("feh --bg-fill --no-fehbg --randomize /home/prozhou/back &")
+awful.util.spawn("feh --bg-fill --no-fehbg --randomize /root/workspace/background &")
 awful.util.spawn("/usr/lib/gnome-settings-daemon/gsd-xsettings")
---awful.util.spawn("/usr/bin/keynav &")

@@ -27,7 +27,8 @@ RUN apt-get -y update && \
    apt install -y fcitx-table-wbpy fcitx-config-gtk gdebi \
    gawk curl  zsh \
     git unzip wget    python3-pip  lsof sudo python \
-    autojump  nmap iproute2 net-tools  axel netcat ripgrep fzf  xcompmgr feh
+    autojump  nmap iproute2 net-tools  axel netcat ripgrep fzf  xcompmgr feh libappindicator3-1 software-properties-common \
+    konsole rofi
 
 
 RUN   locale-gen zh_CN.UTF-8 
@@ -73,7 +74,7 @@ RUN echo "#!/bin/bash\n" > /root/startup.sh && \
     # VNC
     echo 'vncserver -kill :0' >> /root/startup.sh && \
     echo "rm -rfv /tmp/.X*-lock /tmp/.X11-unix" >> /root/startup.sh && \
-    echo 'vncserver :0 -geometry $SIZE' >> /root/startup.sh && \
+    echo 'vncserver :0 -geometry $SIZE -SecurityTypes None' >> /root/startup.sh && \
     echo 'tail -f /root/.vnc/*:0.log' >> /root/startup.sh && \
     # 可执行脚本
     chmod +x /root/startup.sh
