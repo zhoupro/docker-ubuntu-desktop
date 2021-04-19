@@ -1,12 +1,13 @@
 version: "3"
 
 services:
-  ubuntu-desktop:
-    image: mydev
+  ubuntu-learn:
+    image: zhoupro/learn
     privileged: true
     shm_size: '2gb'
     volumes:
       - .:/root/workspace
+      - ./conf/rc.lua:/root/.config/awesome/rc.lua
       - ./conf/konsole/konsolerc:/root/.config/konsolerc
       - ./conf/konsole/konsole:/root/.local/share/konsole
     ports:

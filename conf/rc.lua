@@ -263,6 +263,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
+
+
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
@@ -293,7 +295,7 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
+    awful.key({ modkey }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
@@ -564,7 +566,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 --
 --
 --
-awful.util.spawn("xrandr -o right")
 awful.util.spawn("xcompmgr &")
 --awful.util.spawn("bash /usr/local/bin/awesomeinit.sh")
 awful.util.spawn("feh --bg-fill --no-fehbg --randomize /root/workspace/background &")

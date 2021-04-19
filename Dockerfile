@@ -42,6 +42,9 @@ ADD ./soft/lant.deb  /root/
 ADD ./soft/pxy.sh  /usr/bin/pxy
 RUN gdebi -n /root/lant.deb && rm -f /root/lant.deb
 
+RUN wget 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb' &&\
+	gdebi -n google-chrome-stable_current_amd64.deb && rm -f google-chrome-stable_current_amd64.deb
+
 
 USER root
 WORKDIR /root
